@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#059669">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>AgriGuard AI — See the leaf. Know the problem. Protect the crop.</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+  <!-- TOP FARMER NAVBAR -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-logo" onclick="navTo('home')">
+        <div class="leaf-badge"><i class="fa-solid fa-leaf"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">AGRI GUARD AI</span>
+          <span class="brand-tagline">Farmer Crop Health Assistant</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button type="button" class="nav-btn active" data-target="home" onclick="navTo('home')">
+          <i class="fa-solid fa-house"></i> <span>Home</span>
+        </button>
+        <button type="button" class="nav-btn" data-target="diagnose" onclick="navTo('diagnose')">
+          <i class="fa-solid fa-camera"></i> <span>Diagnose</span>
+        </button>
+        <button type="button" class="nav-btn" data-target="voice" onclick="navTo('voice')">
+          <i class="fa-solid fa-microphone"></i> <span>Voice</span>
+        </button>
+        <button type="button" class="nav-btn" data-target="prevention" onclick="navTo('prevention')">
+          <i class="fa-solid fa-seedling"></i> <span>Prevention</span>
+        </button>
+        <button type="button" class="nav-btn" data-target="history" onclick="navTo('history')">
+          <i class="fa-solid fa-clock-rotate-left"></i> <span>History</span>
+        </button>
+        <button type="button" class="nav-btn" data-target="about" onclick="navTo('about')">
+          <i class="fa-solid fa-circle-info"></i> <span>About</span>
+        </button>
+      </nav>
+
+      <!-- GLOBAL LANGUAGE SELECTOR -->
+      <div class="lang-switch-box">
+        <i class="fa-solid fa-globe lang-icon"></i>
+        <select id="langSelect" class="lang-dropdown" onchange="onLanguageChange()">
+          <option value="Telugu" selected>🇮🇳 తెలుగు (Telugu)</option>
+          <option value="English">🇬🇧 English</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-viewport">
+
+    <!-- PAGE 1: HOME PAGE -->
+    <section id="page-home" class="page-view active">
+      <!-- HERO BANNER -->
+      <div class="hero-card">
+        <span class="hero-badge">AI-POWERED CROP CARE • రైతుల సేవలో ఏఐ</span>
+        <h1 class="hero-title">AGRI GUARD AI</h1>
+        <h2 class="hero-subtitle">"See the leaf. Know the problem. Protect the crop."</h2>
+        <p class="hero-subtitle-telugu">"ఆకును చూడండి. సమస్యను తెలుసుకోండి. పంటను కాపాడుకోండి."</p>
+        <p class="hero-desc">
+          An AI-powered crop health assistant helping farmers identify crop leaf diseases early, get weather context,
+          and follow safe evidence-based prevention and treatment guidelines in Telugu and English.
+        </p>
+      </div>
+
+      <!-- THREE PRIMARY ACTION CARDS FOR FARMERS -->
+      <div class="action-cards-container three-cards">
+        <!-- OPTION 1: CAMERA (PRIMARY MOBILE & WEB) -->
+        <div class="farmer-action-card camera-card" onclick="triggerCameraCapture()">
+          <div class="card-icon-circle emerald">
+            <i class="fa-solid fa-camera"></i>
+          </div>
+          <h3>📷 Capture Leaf</h3>
+          <p>కెమెరాతో ఆకును ఫోటో తీయండి.<br>Take a fresh photo using your phone/webcam.</p>
+          <button type="button" class="action-btn solid">
+            <i class="fa-solid fa-camera"></i> 📷 Capture Leaf
+          </button>
+        </div>
+
+        <!-- OPTION 2: UPLOAD -->
+        <div class="farmer-action-card upload-card" onclick="triggerFileUpload()">
+          <div class="card-icon-circle green">
+            <i class="fa-solid fa-folder-open"></i>
+          </div>
+          <h3>🖼️ Upload Leaf</h3>
+          <p>ఫోన్ లోని ఆకు చిత్రాన్ని ఎంచుకోండి.<br>Upload crop photo saved on your device.</p>
+          <button type="button" class="action-btn outline">
+            <i class="fa-solid fa-upload"></i> Upload Image
+          </button>
+        </div>
+
+        <!-- OPTION 3: VOICE QUESTION -->
+        <div class="farmer-action-card voice-card" onclick="navTo('voice')">
+          <div class="card-icon-circle gold">
+            <i class="fa-solid fa-microphone"></i>
+          </div>
+          <h3>🎙️ Ask by Voice</h3>
+          <p>రైతు వాయిస్ ప్రశ్న • మాట్లాడి అడగండి.<br>Speak your crop health question directly.</p>
+          <button type="button" class="action-btn gold-btn">
+            <i class="fa-solid fa-microphone"></i> 🎙️ Ask Question
+          </button>
+        </div>
+      </div>
+
+      <!-- HIDDEN FILE UPLOAD INPUT -->
+      <input type="file" id="fileUploadInput" accept="image/*" class="hidden" onchange="handleFilePicked(event)">
+
+      <!-- PREVENTION HERO FOOTER -->
+      <div class="prevention-hero-card">
+        <div class="ph-icon"><i class="fa-solid fa-shield-heart"></i></div>
+        <div class="ph-text">
+          <h4>🌱 Prevention comes first • ముందస్తు జాగ్రత్తలు ముఖ్యం</h4>
+          <p>Get practical non-chemical preventive actions focused on early detection, field sanitation, ventilation, and crop monitoring.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 2: DIAGNOSE & IMAGE SELECTION / PREVIEW PAGE -->
+    <section id="page-diagnose" class="page-view">
+      <!-- CROP SELECTOR CARD -->
+      <div class="section-card">
+        <h3 class="card-heading"><i class="fa-solid fa-seedling"></i> Select Crop / పంటను ఎంచుకోండి</h3>
+        <p class="card-subheading">Select the type of crop leaf you are testing:</p>
+        <div class="crop-options-grid">
+          <div class="crop-chip active" data-crop="Tomato" onclick="selectCrop('Tomato')">
+            <span class="crop-emoji">🌱</span>
+            <span class="crop-label">Tomato (టమాటా)</span>
+          </div>
+          <div class="crop-chip" data-crop="Rice" onclick="selectCrop('Rice')">
+            <span class="crop-emoji">🌾</span>
+            <span class="crop-label">Rice (వరి)</span>
+          </div>
+          <div class="crop-chip" data-crop="Corn" onclick="selectCrop('Corn')">
+            <span class="crop-emoji">🌽</span>
+            <span class="crop-label">Corn / Maize (జొన్న/మొక్కజొన్న)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CITY / REGION CONTEXT -->
+      <div class="section-card">
+        <h3 class="card-heading"><i class="fa-solid fa-location-dot"></i> Select City / ప్రాంతం</h3>
+        <select id="citySelect" class="styled-select">
+          <option value="Hyderabad" selected>Hyderabad, AP/Telangana</option>
+          <option value="Vijayawada">Vijayawada, AP</option>
+          <option value="Guntur">Guntur, AP</option>
+          <option value="Warangal">Warangal, TS</option>
+          <option value="Visakhapatnam">Visakhapatnam, AP</option>
+          <option value="Bengaluru">Bengaluru, KA</option>
+          <option value="Delhi">Delhi / NCR</option>
+        </select>
+      </div>
+
+      <!-- IMAGE PREVIEW CARD -->
+      <div class="section-card">
+        <h3 class="card-heading"><i class="fa-solid fa-image"></i> Your Leaf Photo / ఆకు చిత్రం</h3>
+
+        <div id="noImagePlaceholder" class="no-image-box">
+          <i class="fa-solid fa-leaf placeholder-icon"></i>
+          <p>No leaf photo selected yet. Take photo or upload image:</p>
+          <div class="btn-group-center">
+            <button type="button" class="btn-primary" onclick="triggerCameraCapture()"><i
+                class="fa-solid fa-camera"></i> 📷 Capture Leaf</button>
+            <button type="button" class="btn-secondary" onclick="triggerFileUpload()"><i class="fa-solid fa-upload"></i>
+              Upload Image</button>
+          </div>
+        </div>
+
+        <div id="imagePreviewBox" class="preview-display-box hidden">
+          <img id="leafPreviewImg" src="" alt="Your crop leaf photo">
+
+          <div class="preview-controls-row">
+            <button type="button" id="analyzeBtn" class="btn-main-analyze" onclick="startAnalysis()">
+              <i class="fa-solid fa-magnifying-glass-chart"></i> Analyze Leaf (విశ్లేషించు)
+            </button>
+            <button type="button" class="btn-sub-action" onclick="triggerCameraCapture()">
+              <i class="fa-solid fa-camera-rotate"></i> 📷 Retake Photo
+            </button>
+            <button type="button" class="btn-sub-action" onclick="triggerFileUpload()">
+              <i class="fa-solid fa-images"></i> Choose Another
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: FARMER VOICE QUESTION PAGE -->
+    <section id="page-voice" class="page-view">
+      <div class="section-card voice-main-card">
+        <h3 class="card-heading green-heading"><i class="fa-solid fa-microphone"></i> 🎙️ రైతు వాయిస్ ప్రశ్న (Farmer Voice Question)</h3>
+        <p class="card-subheading">మాట్లాడి లేదా టైప్ చేసి మీ పంట సమస్యను అడగండి. Speak or type your crop question below:</p>
+
+        <!-- MICROPHONE TAP BUTTON -->
+        <div class="mic-trigger-container">
+          <button type="button" id="micBtn" class="mic-action-btn" onclick="toggleSpeechRecognition()">
+            <i class="fa-solid fa-microphone mic-icon"></i>
+            <span id="micBtnText">🎙️ నొక్కి మాట్లాడండి (Tap to Speak)</span>
+          </button>
+          <div id="listeningIndicator" class="listening-indicator hidden">
+            <span class="pulse-dot"></span> 🔴 వింటున్నాము... (Listening to your speech...)
+          </div>
+        </div>
+
+        <!-- RECOGNIZED SPEECH DISPLAY -->
+        <div id="transcriptBox" class="transcript-box hidden">
+          <h4>🎙️ మీరు చెప్పింది (What you said):</h4>
+          <p id="transcriptText" class="transcript-text"></p>
+        </div>
+
+        <!-- TEXT INPUT FALLBACK -->
+        <div class="voice-fallback-box">
+          <h4>లేదా ప్రశ్నను టైప్ చేయండి (Or type your question):</h4>
+          <textarea id="voiceQueryInput" rows="3" class="styled-textarea"
+            placeholder="ఉదాహరణ: నా టమాటా ఆకుల మీద మచ్చలు వస్తున్నాయి. ఏం చేయాలి? / There are brown spots on my tomato leaves. What should I do?"></textarea>
+          <div class="voice-submit-row">
+            <button type="button" class="btn-primary flex-btn" onclick="submitVoiceTextQuery()">
+              <i class="fa-solid fa-paper-plane"></i> ప్రశ్న పంపండి (Submit Question)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VOICE RESPONSE DISPLAY CARD -->
+      <div id="voiceResultCard" class="section-card voice-result-card hidden">
+        <h3 class="card-heading green-heading"><i class="fa-solid fa-robot"></i> 🤖 AgriGuard AI సమాధానం</h3>
+        
+        <div class="explanation-box margin-bottom-16">
+          <p id="voiceAnswerSummary" class="tel-summary"></p>
+        </div>
+
+        <div class="advisory-sub-section">
+          <h4>🚜 ఇప్పుడు ఏమి చేయాలి?:</h4>
+          <ul id="voiceActionsList" class="prevention-list"></ul>
+        </div>
+
+        <div class="advisory-sub-section">
+          <h4>💊 చికిత్స / పురుగుమందుల సమాచారం:</h4>
+          <p id="voiceTreatmentText" class="chem-text"></p>
+        </div>
+
+        <!-- TELUGU AUDIO PLAYER IN VOICE PAGE -->
+        <div id="voiceAudioBox" class="audio-box">
+          <div class="audio-header-flex">
+            <h4><i class="fa-solid fa-volume-high"></i> 🔊 తెలుగులో వినండి (Listen in Telugu):</h4>
+            <label class="autoplay-label">
+              <input type="checkbox" id="voiceAutoplayChk"> ☑ Auto-play advice
+            </label>
+          </div>
+
+          <div class="audio-controls-row">
+            <button type="button" class="audio-control-btn play-btn" onclick="playTeluguAudio('voiceAudio')">
+              <i class="fa-solid fa-play"></i> Play
+            </button>
+            <button type="button" class="audio-control-btn pause-btn" onclick="pauseTeluguAudio('voiceAudio')">
+              <i class="fa-solid fa-pause"></i> Pause
+            </button>
+            <button type="button" class="audio-control-btn replay-btn" onclick="replayTeluguAudio('voiceAudio')">
+              <i class="fa-solid fa-rotate-left"></i> Replay
+            </button>
+          </div>
+          <audio id="voiceAudio" controls class="styled-audio"></audio>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 4: RESULT PAGE (TELUGU-FIRST & ENGLISH) -->
+    <section id="page-result" class="page-view">
+
+      <!-- LOW CONFIDENCE ALERT CARD -->
+      <div id="lowConfidenceAlert" class="alert-card warning-alert hidden">
+        <div class="alert-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="alert-body">
+          <h4>⚠️ AI నమ్మకం తక్కువగా ఉంది (Low Confidence Detection)</h4>
+          <p>ఆకు వ్యాధిని ఖచ్చితంగా గుర్తించడానికి ఏఐకి తగినంత స్పష్టత లభించలేదు. దయచేసి వెలుతురులో మరొక స్పష్టమైన ఫోటో తీయండి.</p>
+          <button type="button" class="btn-retry" onclick="navTo('diagnose'); triggerCameraCapture();">
+            <i class="fa-solid fa-camera"></i> 📷 Retake Clear Photo
+          </button>
+        </div>
+      </div>
+
+      <!-- MAIN RESULT CARD -->
+      <div class="section-card result-main-card">
+        <div class="card-header-flex">
+          <h3 class="card-heading"><i class="fa-solid fa-notes-medical"></i> Crop Health Assessment • పంట ఆరోగ్య విశ్లేషణ</h3>
+          <span class="screening-tag"><i class="fa-solid fa-circle-check"></i> AI Screening</span>
+        </div>
+
+        <div class="result-summary-grid">
+          <div class="res-item">
+            <span class="res-label">🌱 Crop / పంట</span>
+            <span class="res-value" id="resCropName">-</span>
+          </div>
+          <div class="res-item">
+            <span class="res-label">🦠 Detected Disease / వ్యాధి</span>
+            <span class="res-value highlight" id="resConditionName">-</span>
+          </div>
+          <div class="res-item">
+            <span class="res-label">📊 Confidence / నమ్మక స్థాయి</span>
+            <span class="res-value" id="resConfidenceScore">-</span>
+            <div class="res-progress-bg">
+              <div class="res-progress-fill" id="resConfidenceBar"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🔍 ఏమి గుర్తించబడింది? & 📖 దీని అర్థం ఏమిటి? -->
+        <div class="explanation-box">
+          <h4><i class="fa-solid fa-circle-info"></i> 🔍 ఏమి గుర్తించబడింది? & 📖 దీని అర్థం ఏమిటి?</h4>
+          <p id="resWhatItMeans">Loading assessment details...</p>
+        </div>
+      </div>
+
+      <!-- TELUGU AUDIO PLAYER CARD (TELUGU FIRST ADVISORY AUDIO) -->
+      <div id="teluguVoiceCard" class="section-card telugu-voice-card">
+        <div class="audio-header-flex">
+          <h3 class="card-heading green-heading"><i class="fa-solid fa-volume-high"></i> 🔊 తెలుగులో వినండి (Listen in Telugu)</h3>
+          <label class="autoplay-label">
+            <input type="checkbox" id="teluguAutoplayChk"> ☑ Auto-play Telugu advice
+          </label>
+        </div>
+
+        <div class="audio-controls-row margin-top-12">
+          <button type="button" class="audio-control-btn play-btn" onclick="playTeluguAudio('teluguAudio')">
+            <i class="fa-solid fa-play"></i> ▶️ Play
+          </button>
+          <button type="button" class="audio-control-btn pause-btn" onclick="pauseTeluguAudio('teluguAudio')">
+            <i class="fa-solid fa-pause"></i> ⏸️ Pause
+          </button>
+          <button type="button" class="audio-control-btn replay-btn" onclick="replayTeluguAudio('teluguAudio')">
+            <i class="fa-solid fa-rotate-left"></i> 🔁 Replay
+          </button>
+        </div>
+        <audio id="teluguAudio" controls class="styled-audio margin-top-12"></audio>
+      </div>
+
+      <!-- 🚜 ఇప్పుడు ఏమి చేయాలి? & 🌿 ముందస్తు జాగ్రత్తలు -->
+      <div class="section-card advisory-card">
+        <h3 class="card-heading green-heading"><i class="fa-solid fa-shield-halved"></i> 🚜 ఇప్పుడు ఏమి చేయాలి? & 🌿 ముందస్తు జాగ్రత్తలు</h3>
+        <p class="advisory-intro" id="advisoryIntroText">పొలం యాజమాన్యం మరియు సేంద్రీయ/రసాయనేతర ముందస్తు జాగ్రత్తలు:</p>
+        <ul id="preventionActionsList" class="prevention-list"></ul>
+      </div>
+
+      <!-- 💊 చికిత్స / పురుగుమందుల సమాచారం -->
+      <div class="section-card chemical-card">
+        <h3 class="card-heading orange-heading"><i class="fa-solid fa-flask-vial"></i> 💊 చికిత్స / పురుగుమందుల సమాచారం</h3>
+        <div class="chemical-content">
+          <div class="safety-warning-banner">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <p id="safetyNoticeText">
+              <strong>ముఖ్యమైన భద్రతా హెచ్చరిక:</strong> ధృవీకరించని రసాయన మందులను స్ప్రే చేయకండి. స్థానిక వ్యవసాయ నిపుణుల సలహా మేరకు మాత్రమే మందులను వాడండి.
+            </p>
+          </div>
+          <p id="chemicalAdviceText" class="chem-text">
+            ఈ వ్యాధికి నిర్దిష్ట పురుగుమందు సూచన ఇవ్వడానికి ధృవీకరించిన సమాచారం అందుబాటులో లేదు. స్థానిక వ్యవసాయ అధికారి లేదా అధీకృత వ్యవసాయ నిపుణుడిని సంప్రదించండి.
+          </p>
+        </div>
+      </div>
+
+      <!-- 🌦️ వాతావరణ సమాచారం -->
+      <div class="section-card weather-card">
+        <h3 class="card-heading"><i class="fa-solid fa-cloud-sun-rain"></i> 🌦️ వాతావరణ సమాచారం</h3>
+
+        <div class="weather-metrics-grid">
+          <div class="w-item">
+            <span class="w-label">ప్రాంతం (City)</span>
+            <span class="w-val" id="wCity">-</span>
+          </div>
+          <div class="w-item">
+            <span class="w-label">ఉష్ణోగ్రత (Temp)</span>
+            <span class="w-val" id="wTemp">-</span>
+          </div>
+          <div class="w-item">
+            <span class="w-label">తేమ (Humidity)</span>
+            <span class="w-val" id="wHumidity">-</span>
+          </div>
+          <div class="w-item">
+            <span class="w-label">వర్షపాతం (Rain)</span>
+            <span class="w-val" id="wRain">-</span>
+          </div>
+        </div>
+
+        <div class="weather-note-box">
+          <i class="fa-solid fa-temperature-arrow-up"></i>
+          <p id="wImpactNote">High humidity and leaf wetness foster fungal spot development.</p>
+        </div>
+      </div>
+
+      <!-- ⚠️ ఎప్పుడు వ్యవసాయ నిపుణుడిని సంప్రదించాలి? -->
+      <div class="section-card expert-card">
+        <h3 class="card-heading red-heading"><i class="fa-solid fa-user-doctor"></i> ⚠️ ఎప్పుడు వ్యవసాయ నిపుణుడిని సంప్రదించాలి?</h3>
+        <p class="expert-text">
+          తెగులు లేదా మచ్చలు వేగంగా వ్యాపిస్తున్నప్పుడు లేదా ఆకులు ఎండిపోతున్నప్పుడు వెంటనే మీ సమీప <strong>కృషి విజ్ఞాన కేంద్రం (KVK)</strong> లేదా వ్యవసాయ విస్తరణ అధికారి (AEO)ని సంప్రదించండి.
+        </p>
+      </div>
+    </section>
+
+    <!-- PAGE 5: PREVENTION KNOWLEDGE PAGE -->
+    <section id="page-prevention" class="page-view">
+      <div class="section-card">
+        <h3 class="card-heading green-heading"><i class="fa-solid fa-shield-virus"></i> General Crop Disease Prevention Guidelines</h3>
+        <p class="card-subheading">Essential preventive practices recommended for smallholder farmers:</p>
+
+        <ul class="prevention-list static-guidelines">
+          <li><strong>Sanitation (పరిశుభ్రత):</strong> Remove and safely bury infected foliage to prevent spore spread.</li>
+          <li><strong>Plant Spacing (దూరం):</strong> Maintain spacing between plants for adequate canopy airflow.</li>
+          <li><strong>Watering Management (నీటి యాజమాన్యం):</strong> Avoid late afternoon overhead watering. Water near soil base.</li>
+          <li><strong>Field Scouting (పరిశీలన):</strong> Inspect leaf undersides weekly for early symptom spots.</li>
+          <li><strong>Seed Quality (విత్తన నాణ్యత):</strong> Always use certified disease-free planting seeds.</li>
+          <li><strong>Crop Rotation (పంట మార్పిడి):</strong> Practice multi-year crop rotation with non-host crops.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PAGE 6: HISTORY PAGE -->
+    <section id="page-history" class="page-view">
+      <div class="section-card">
+        <h3 class="card-heading"><i class="fa-solid fa-clock-rotate-left"></i> Previous Diagnoses & Queries</h3>
+        <p class="card-subheading">Recent AI assessments saved on your device:</p>
+
+        <div id="historyListContainer" class="history-grid">
+          <div class="empty-history-box" id="emptyHistoryNotice">
+            <i class="fa-solid fa-folder-open"></i>
+            <p>No previous diagnoses recorded yet. Perform a leaf analysis to view history here.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 7: ABOUT PAGE -->
+    <section id="page-about" class="page-view">
+      <div class="section-card">
+        <h3 class="card-heading"><i class="fa-solid fa-circle-info"></i> About AgriGuard AI</h3>
+        <p class="about-text">
+          <strong>AgriGuard AI</strong> is an intelligent crop disease diagnosis and advisory agent supporting farmers with computer vision screening, real-time weather context, evidence-grounded RAG advisories, and regional language speech interaction.
+        </p>
+        <div class="tech-stack-pills">
+          <span>EfficientNet-B0 Computer Vision</span>
+          <span>Google Gemini LLM</span>
+          <span>Open-Meteo Weather API</span>
+          <span>TF-IDF RAG Knowledge Base</span>
+          <span>gTTS Speech Engine</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CAMERA CAPTURE MODAL / OVERLAY FOR MOBILE & DESKTOP -->
+  <div id="cameraModal" class="camera-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="cameraModalTitle">
+    <div class="camera-modal-card">
+      <div class="camera-modal-header">
+        <h4 id="cameraModalTitle"><i class="fa-solid fa-camera"></i> 📷 Capture Leaf</h4>
+        <button type="button" class="camera-close-btn" onclick="closeCameraModal()" aria-label="Close camera"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- PERMISSION / ERROR BANNER -->
+      <div id="cameraErrorBox" class="camera-error-banner hidden">
+        <i class="fa-solid fa-triangle-exclamation camera-err-icon"></i>
+        <div class="camera-err-content">
+          <p id="cameraErrorMessage">📷 Camera access is blocked.<br>Please allow camera permission in your browser settings and try again.</p>
+          <button type="button" class="btn-fallback-upload" onclick="closeCameraModal(); triggerFileUpload();">
+            <i class="fa-solid fa-folder-open"></i> Use Upload Leaf Image Instead
+          </button>
+        </div>
+      </div>
+
+      <!-- CAMERA VIEWPORT -->
+      <div id="cameraViewportContainer" class="camera-viewport-container">
+        <!-- LIVE CAMERA STREAM -->
+        <div id="liveStreamView" class="camera-view-box">
+          <video id="cameraVideo" autoplay playsinline muted></video>
+          <div class="camera-frame-overlay">
+            <div class="leaf-target-box">
+              <span class="target-corner top-left"></span>
+              <span class="target-corner top-right"></span>
+              <span class="target-corner bottom-left"></span>
+              <span class="target-corner bottom-right"></span>
+              <p class="target-guide-text">🌿 Center crop leaf inside frame</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CAPTURED PHOTO PREVIEW -->
+        <div id="capturedPreviewView" class="camera-view-box hidden">
+          <img id="cameraCapturedImg" src="" alt="Captured crop leaf photo">
+          <div class="preview-clarity-prompt">
+            <p><i class="fa-solid fa-circle-question"></i> Is this leaf image clear?</p>
+          </div>
+        </div>
+
+        <canvas id="cameraCanvas" class="hidden"></canvas>
+      </div>
+
+      <!-- FOOTER ACTION BUTTONS -->
+      <div class="camera-modal-footer">
+        <div id="liveControls" class="camera-controls-group">
+          <button type="button" class="btn-camera-capture" onclick="takeCameraPhoto()">
+            <i class="fa-solid fa-circle-dot"></i> 📸 Take Photo
+          </button>
+          <button type="button" id="toggleCameraBtn" class="btn-camera-flip hidden" onclick="switchCameraFacing()">
+            <i class="fa-solid fa-camera-rotate"></i> Switch Camera
+          </button>
+        </div>
+
+        <div id="capturedControls" class="camera-controls-group hidden">
+          <button type="button" class="btn-camera-retake" onclick="retakeCameraPhoto()">
+            <i class="fa-solid fa-rotate-left"></i> 🔄 Retake
+          </button>
+          <button type="button" class="btn-camera-use" onclick="useCapturedPhoto()">
+            <i class="fa-solid fa-check"></i> ✓ Use This Photo
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYSIS PROGRESS OVERLAY -->
+  <div id="analysisProgressOverlay" class="analysis-overlay hidden">
+    <div class="analysis-modal-card">
+      <h3 class="progress-title">Analyzing Crop Leaf • పంట పరిశీలన</h3>
+      <p class="progress-sub">AgriGuard AI is evaluating your leaf photo...</p>
+
+      <div class="workflow-stepper">
+        <div class="step-item" id="wf-step-1">
+          <div class="step-badge">📷</div>
+          <div class="step-name">Input</div>
+        </div>
+        <div class="step-arrow">➔</div>
+        <div class="step-item" id="wf-step-2">
+          <div class="step-badge">🔍</div>
+          <div class="step-name">EfficientNet</div>
+        </div>
+        <div class="step-arrow">➔</div>
+        <div class="step-item" id="wf-step-3">
+          <div class="step-badge">🌿</div>
+          <div class="step-name">Health</div>
+        </div>
+        <div class="step-arrow">➔</div>
+        <div class="step-item" id="wf-step-4">
+          <div class="step-badge">☁️</div>
+          <div class="step-name">Weather</div>
+        </div>
+        <div class="step-arrow">➔</div>
+        <div class="step-item" id="wf-step-5">
+          <div class="step-badge">📚</div>
+          <div class="step-name">RAG</div>
+        </div>
+        <div class="step-arrow">➔</div>
+        <div class="step-item" id="wf-step-6">
+          <div class="step-badge">🛡️</div>
+          <div class="step-name">Safety</div>
+        </div>
+        <div class="step-arrow">➔</div>
+        <div class="step-item" id="wf-step-7">
+          <div class="step-badge">🌱</div>
+          <div class="step-name">Advisory</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION BAR -->
+  <nav class="mobile-bottom-nav">
+    <button type="button" class="bnav-btn active" data-target="home" onclick="navTo('home')">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </button>
+    <button type="button" class="bnav-btn" data-target="diagnose" onclick="navTo('diagnose')">
+      <i class="fa-solid fa-camera"></i>
+      <span>Diagnose</span>
+    </button>
+    <button type="button" class="bnav-btn" data-target="voice" onclick="navTo('voice')">
+      <i class="fa-solid fa-microphone"></i>
+      <span>Voice</span>
+    </button>
+    <button type="button" class="bnav-btn" data-target="history" onclick="navTo('history')">
+      <i class="fa-solid fa-clock-rotate-left"></i>
+      <span>History</span>
+    </button>
+  </nav>
+
+  <footer class="app-footer">
+    <p><strong>AgriGuard AI</strong> — See the leaf. Know the problem. Protect the crop.</p>
+    <p class="footer-sub">ఆకును చూడండి • సమస్యను తెలుసుకోండి • పంటను కాపాడుకోండి</p>
+  </footer>
+
+  <script src="/static/js/main.js"></script>
+</body>
+
+</html>
